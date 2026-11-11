@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Karishma’s Nutrition Protocol</title>
+<style>
+:root{--bg:#f1f6f2;--card:#fff;--ink:#16261f;--mute:#566a60;--pine:#1f5a47;--on:#fff;--tint:#dcebe3;--gold:#c98a10;--line:#d3e0d8;color-scheme:light}
+@media(prefers-color-scheme:dark){:root{--bg:#0f1a15;--card:#17261f;--ink:#e6efe9;--mute:#9db3a7;--pine:#6fc3a0;--on:#0f1a15;--tint:#203b30;--gold:#e8b44a;--line:#2b4137;color-scheme:dark}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+h1,h2,h3{font-family:Georgia,"Times New Roman",serif;line-height:1.2;margin:0}
+header{padding:28px 20px 18px;max-width:760px;margin:0 auto}
+header p{margin:6px 0 0;color:var(--mute)}
+h1{font-size:2rem}
+.goals{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
+.goals div{flex:1 1 150px;border-left:4px solid var(--gold);padding:2px 0 2px 10px}
+.goals b{display:block;font-family:Georgia,serif;font-size:1.25rem}
+.goals span{color:var(--mute);font-size:.85rem}
+nav{position:sticky;top:0;z-index:5;background:var(--bg);border-bottom:1px solid var(--line);display:flex;gap:4px;overflow-x:auto;padding:8px 16px;max-width:760px;margin:0 auto}
+nav button{flex:1 0 auto;border:0;background:none;color:var(--mute);font:inherit;font-weight:600;padding:9px 14px;border-radius:8px;cursor:pointer}
+nav button[aria-selected=true]{background:var(--pine);color:var(--on)}
+main{max-width:760px;margin:0 auto;padding:16px 20px 60px}
+section{display:none}section.on{display:block}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;margin-bottom:14px}
+h2{font-size:1.35rem;margin-bottom:8px}h3{font-size:1.05rem;margin-bottom:6px}
+.mute{color:var(--mute);font-size:.9rem}
+button,input,textarea{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.bar{height:12px;background:var(--tint);border-radius:6px;overflow:hidden;margin:8px 0}
+.bar i{display:block;height:100%;width:0;background:var(--pine);transition:width .3s}
+.chk{display:flex;gap:12px;align-items:center;padding:11px 4px;border-bottom:1px solid var(--line);cursor:pointer}
+.chk:last-child{border:0}
+.chk input{width:22px;height:22px;accent-color:var(--pine);flex:none}
+.chk.done span{text-decoration:line-through;color:var(--mute)}
+details{border-bottom:1px solid var(--line);padding:10px 0}
+details:last-child{border:0}
+summary{cursor:pointer;font-weight:600;list-style:none;display:flex;justify-content:space-between;gap:10px}
+summary::after{content:"+";color:var(--pine);font-size:1.3rem;line-height:1}
+details[open] summary::after{content:"\2212"}
+summary small{display:block;font-weight:400;color:var(--mute)}
+details ul{margin:10px 0 2px;padding-left:20px}details li{margin-bottom:6px}
+.note{background:var(--tint);border-radius:8px;padding:10px 12px;margin:10px 0;font-size:.92rem}
+.row{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--line)}
+.row:last-child{border:0}
+.row .nm{flex:1}.row .g{color:var(--mute);font-size:.85rem}
+.row button{width:36px;height:36px;border-radius:50%;border:1px solid var(--pine);background:none;color:var(--pine);font-size:1.2rem;cursor:pointer}
+.row button.p{background:var(--pine);color:var(--on)}
+.row .c{min-width:20px;text-align:center;font-weight:700}
+.big{font-family:Georgia,serif;font-size:2.4rem;line-height:1}
+.act{background:var(--pine);color:var(--on);border:0;border-radius:8px;padding:10px 16px;font-weight:600;cursor:pointer}
+.ghost{background:none;border:1px solid var(--line);color:var(--mute);border-radius:8px;padding:8px 12px;cursor:pointer}
+input[type=number],input[type=text],textarea{width:100%;background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:9px 10px}
+.f{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}.f label{flex:1 1 110px;font-size:.85rem;color:var(--mute)}
+.log{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--line);font-size:.95rem}
+.dayrow{display:flex;gap:6px;overflow-x:auto;margin:12px 0 4px}
+.dayrow button{flex:1 0 auto;border:1px solid var(--line);background:none;border-radius:8px;padding:8px 12px;font-weight:600;color:var(--mute);cursor:pointer}
+.dayrow button[aria-pressed=true]{background:var(--pine);border-color:var(--pine);color:var(--on)}
+.meal{padding:12px 0;border-bottom:1px solid var(--line)}
+.meal .h{display:flex;justify-content:space-between;gap:10px;font-weight:600}
+.meal .pp{color:var(--pine);white-space:nowrap}.meal p{margin:4px 0 0}
+.tot{display:flex;justify-content:space-between;padding-top:12px;font-weight:700}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style></head><body>
+<header>
+<h1>Karishma’s Nutrition Protocol</h1>
+<p>Prepared by Dt. Asma Siddiqua. Open this page every day: tick your meals, track your protein, log your weight.</p>
+<div class="goals">
+<div><b>46 to 47 kg</b><span>First milestone. Steady gain of 0.25 to 0.4 kg a week</span></div>
+<div><b>+4 kg muscle</b><span>Over roughly 9 to 12 months with strength training</span></div>
+<div><b>About 90 g protein</b><span>15 to 20 g at every meal. 80 g is the minimum</span></div>
+<div><b>About 2,000 to 2,200 kcal</b><span>Build up to it over the first 2 weeks</span></div>
+</div></header>
+<nav role="tablist" aria-label="Sections"></nav>
+<main>
+
+<section id="today"><div class="card">
+<h2>Today’s checklist</h2>
+<div class="bar"><i id="tb"></i></div><div class="mute" id="tt"></div>
+<div id="cl"></div></div>
+<div class="card"><h3>Today’s note</h3>
+<p class="mute">How was your stomach, sleep, stress and energy? Two lines is enough. This helps us find your triggers.</p>
+<textarea id="nt" rows="3" placeholder="Acidity after dinner, slept 6 hours, stressful class day..."></textarea></div>
+<div class="card"><h3>Daily rules</h3>
+<ul><li>Do not go more than 3.5 hours without food on teaching days.</li>
+<li>Eat slowly, sit upright for 30 minutes after meals, finish dinner 2.5 to 3 hours before sleep.</li>
+<li>Tea: up to 2 cups, after food, never on an empty stomach.</li>
+<li>Fried snacks (samosa, puff) once a week at most.</li>
+<li>On stressful days when appetite drops, a shake or a handful of nuts and dates still counts.</li>
+<li>Sip water through the day, about 2 to 2.5 litres.</li></ul></div></section>
+
+<section id="meals"><div class="card">
+<h2>Weekly menu</h2>
+<p class="mute">A 7-day cycle that repeats every week. Every meal gives 15 to 20 g protein with healthy fats and slow carbohydrates. Swap any two days if needed. Soak dals, millets and oats overnight and cook them soft.</p>
+<div class="dayrow" id="dy"></div><div id="dm"></div><div class="note" id="dn"></div></div>
+<div class="card"><h2>Gut support foods</h2><div id="gt"></div></div></section>
+
+<section id="protein"><div class="card">
+<h2>Protein tracker</h2>
+<div class="big"><span id="pt">0</span> <span class="mute">of 80 g</span></div>
+<div class="bar"><i id="pb"></i></div>
+<div class="mute" id="pm"></div>
+<div id="pl" style="margin-top:8px"></div>
+<button class="ghost" id="pr" style="margin-top:10px">Clear today</button></div>
+<div class="card"><h3>Protein powder guide</h3>
+<ul><li>Choose a whey isolate (vegetarian, lower in lactose) or, if milk causes bloating, a pea and rice blend. Pick a lab-tested brand with no added sugar.</li>
+<li>Days 1 to 4: a quarter scoop in the mid-morning shake, never on an empty stomach.</li>
+<li>From day 5: half a scoop in the mid-morning shake. On strength days (Mon, Wed, Fri) you may add a second half scoop after the session.</li>
+<li>Aim for about two thirds of your protein from food. Powder fills the gap and does not replace meals.</li>
+<li>If you feel gas, acidity or heaviness, reduce to half a scoop and tell us.</li></ul></div></section>
+
+<section id="train"><div class="card">
+<h2>Strength and movement</h2>
+<p>Building muscle needs resistance training and enough food. Your daily steps and classes already burn a lot, so the plan adds strength sessions and trims extra walking.</p>
+<details open><summary>Weekly shape</summary><ul>
+<li>Strength: 3 sessions a week, 30 to 40 minutes, with a rest day between.</li>
+<li>Kathak twice a week continues. It counts as your cardio.</li>
+<li>Steps: about 8,000 to 10,000 on teaching days. Skip the 20,000 days.</li>
+<li>One complete rest day a week.</li></ul></details>
+<details><summary>Session A</summary><ul>
+<li>Goblet squat or sit to stand: 3 x 10</li><li>Glute bridge: 3 x 12</li><li>Incline push up: 3 x 8 to 10</li><li>Band or dumbbell row: 3 x 10</li><li>Plank: 3 x 20 to 30 seconds</li></ul></details>
+<details><summary>Session B</summary><ul>
+<li>Romanian deadlift, light dumbbells: 3 x 10</li><li>Split squat: 3 x 8 each side</li><li>Shoulder press: 3 x 10</li><li>Band pull apart or lat pulldown: 3 x 12</li><li>Dead bug: 3 x 8 each side</li></ul></details>
+<details><summary>Before and after</summary><ul>
+<li>Before: a banana with milk or toast 45 to 60 minutes earlier. Do not train on an empty stomach.</li>
+<li>After: a shake or a full meal within 1 hour.</li>
+<li>Start light, learn the form first, and add weight when the last set feels easy. A trainer should check your form in the first week.</li>
+<li>Sleep 7 to 8 hours. Muscle is built during recovery.</li></ul></details>
+</div></section>
+
+<section id="prog"><div class="card">
+<h2>Progress log</h2>
+<p class="mute">Weigh once a week, same morning, same conditions. Check body composition once a month on the same device.</p>
+<div class="f"><label>Weight (kg)<input type="number" step="0.1" id="wk"></label>
+<label>Body fat % (optional)<input type="number" step="0.1" id="wf"></label>
+<label>Muscle mass kg (optional)<input type="number" step="0.1" id="wm"></label></div>
+<button class="act" id="wa">Save entry</button>
+<div id="ws" class="note" style="display:none"></div><div id="wl" style="margin-top:8px"></div></div>
+<div class="card"><h3>Tests to complete with your doctor</h3>
+<ul><li>Iron studies with ferritin, vitamin B12 and folate</li>
+<li>Repeat fasting blood sugar with fasting insulin, after 10 to 12 hours of fasting</li>
+<li>Repeat urine test (mid stream sample) and urine culture if advised</li>
+<li>Celiac screen with total IgA, if your gastroenterologist agrees</li></ul>
+<p class="mute">Also tell your doctor if you are still taking pantoprazole, and for how long.</p></div>
+<div class="card" style="border-color:var(--gold)"><h3>Contact your doctor promptly if</h3>
+<ul><li>Black, tarry or bloody stool</li><li>Vomiting that does not settle, or trouble swallowing</li>
+<li>Fainting, severe stomach pain, or ongoing weight loss</li><li>Missed or very late periods</li></ul>
+<p class="mute">Next review with Dt. Asma: after 2 weeks. Bring your weight log and daily notes.</p></div></section>
+</main>
+<script>
+const $=s=>document.querySelector(s),T=new Date().toLocaleDateString('en-CA');
+let S={};try{S=JSON.parse(localStorage.getItem('kp1')||'{}')}catch(e){}
+S.d=S.d||{};S.w=S.w||[];const D=S.d[T]=S.d[T]||{c:{},p:{},n:''};
+const save=()=>{try{localStorage.setItem('kp1',JSON.stringify(S))}catch(e){}};
+const tabs=[['today','Today'],['meals','Weekly menu'],['protein','Protein'],['train','Training'],['prog','Progress']];
+const nav=$('nav');
+tabs.forEach(([id,l],i)=>{const b=document.createElement('button');b.textContent=l;b.setAttribute('role','tab');b.dataset.t=id;
+b.onclick=()=>show(id);nav.appendChild(b)});
+function show(id){document.querySelectorAll('section').forEach(s=>s.classList.toggle('on',s.id===id));
+nav.querySelectorAll('button').forEach(b=>b.setAttribute('aria-selected',b.dataset.t===id));
+try{history.replaceState(null,'','#'+id)}catch(e){}}
+// checklist
+const C=["Breakfast before the first class","Mid-morning snack or shake","Lunch with dal or paneer","Evening snack (no samosa or puff)","Dinner by 8:30","Warm milk at bedtime","Protein powder taken","2 to 2.5 litres of water","Slept 7 to 8 hours last night","Strength or movement session (session days)"];
+function rc(){const el=$('#cl');el.innerHTML='';C.forEach((t,i)=>{const l=document.createElement('label');l.className='chk'+(D.c[i]?' done':'');
+l.innerHTML='<input type="checkbox"'+(D.c[i]?' checked':'')+'><span>'+t+'</span>';
+l.firstChild.onchange=e=>{D.c[i]=e.target.checked;save();rc()};el.appendChild(l)});
+const n=Object.values(D.c).filter(Boolean).length;$('#tb').style.width=n/C.length*100+'%';$('#tt').textContent=n+' of '+C.length+' done today'}
+rc();$('#nt').value=D.n||'';$('#nt').oninput=e=>{D.n=e.target.value;save()};
+// menu
+const SH=f=>"Shake: 1 glass milk, half scoop protein powder, "+f;
+const BED="Warm milk with a pinch of turmeric and 4 soaked almonds";
+const TM=["7:30","10:30","1:00","4:30","8:00","9:30"],NM=["Breakfast","Between classes","Lunch","Evening snack","Dinner","Before bed"];
+const W=[["Monday",1,"banana and 3 dates",["Milk oats porridge: 40 g oats cooked in 1 glass milk, 1 tbsp chia, 1 tbsp almond butter, half a banana",18],["2 jowar rotis with ghee, 1 bowl moong dal, lauki or beans sabzi, 1 bowl curd",19],["Paneer sandwich: 50 g paneer on whole wheat bread with mint chutney, plus a fruit",15],["Vegetable dalia khichdi: 1 cup dalia with half a cup moong dal and vegetables, 2 tsp ghee, 1 bowl curd",18]],
+["Tuesday",0,"ripe papaya and 4 soaked almonds",["2 moong dal dosas stuffed with 40 g grated paneer, with coconut chutney",18],["1.5 cups rice, 1 big bowl dal tadka in ghee, carrot or beetroot sabzi, 1 bowl curd, 1 tbsp peanut chutney",19],["Steamed sprouted moong chaat (1 bowl) with roasted peanuts, 1 tsp olive oil and a banana",15],["2 ragi rotis with paneer bhurji (60 g paneer cooked in ghee) and a cooked sabzi",18]],
+["Wednesday",1,"banana and 3 dates",["Vegetable dalia upma with 1 tbsp roasted peanuts, 6 soaked almonds and 1 bowl curd",17],["2 bajra or jowar rotis, palak paneer (80 g paneer), 1 small bowl dal, 1 tsp ghee",20],["Curd bowl with chia, fruit and 1 tbsp roasted flax and pumpkin seeds, plus 1 besan chilla",16],["2 millet dosas (ragi or foxtail, fresh batter) with sambar, coconut chutney and 40 g paneer",19]],
+["Thursday",0,"banana and 2 walnuts",["Ragi porridge: 3 tbsp ragi flour cooked in 1 glass milk, 1 tbsp peanut butter, 6 almonds",17],["1.5 cups rice, 1 big bowl masoor dal, sabzi, 1 bowl curd, 1 tsp ghee",19],["60 g paneer cubes tossed in 1 tsp ghee with jeera, and a handful of walnuts",15],["2 jowar rotis, 1 bowl moong dal, lightly cooked broccoli or beans, 1 bowl curd",18]],
+["Friday",1,"ripe papaya and 3 dates",["2 oats and moong chillas (oats powder with moong batter), mint chutney, 1 bowl curd",17],["Paneer vegetable pulao: 1.5 cups rice with 60 g paneer, and 1 bowl curd raita",20],["Post-session: 1 glass milk, 1 banana, 1 tbsp peanut butter, 5 almonds",15],["Millet khichdi (foxtail or barnyard) with moong dal, 1.5 bowls with 2 tsp ghee, 1 bowl curd",18]],
+["Saturday",0,"banana and 3 dates",["2 small whole wheat paneer parathas (40 g paneer) cooked in ghee, with 1 bowl curd",18],["2 rotis (1 wheat, 1 jowar), 1 bowl mixed toor and moong dal, ridge gourd sabzi, 1 bowl curd",19],["30 g roasted chana, a handful of peanuts and a banana",15],["3 idlis (fresh batter) with sambar, chutney and 40 g paneer",19]],
+["Sunday",0,"stewed apple and 3 dates",["Overnight oats: 40 g oats soaked in 1 glass milk or curd, chia, 4 walnuts, stewed apple",17],["2 rotis or 1.5 cups rice, mild paneer curry (80 g paneer), 1 small bowl dal, sabzi",20],["2 besan chillas with mint chutney and 1 bowl curd",15],["1.5 bowls moong dal soup, 1 jowar roti, paneer bhurji (40 g)",18]]];
+let di=(new Date().getDay()+6)%7;
+function rm(){const d=W[di],ms=[[d[3][0],d[3][1]],[SH(d[2]),17],d[4],d[5],d[6],[BED,8]];
+$('#dy').innerHTML='';W.forEach((w,i)=>{const b=document.createElement('button');b.textContent=w[0].slice(0,3);b.setAttribute('aria-pressed',i===di);b.onclick=()=>{di=i;rm()};$('#dy').appendChild(b)});
+$('#dm').innerHTML=ms.map((m,i)=>'<div class="meal"><div class="h"><span>'+NM[i]+' <small class="mute">'+TM[i]+'</small></span><span class="pp">'+m[1]+' g protein</span></div><p>'+m[0]+'</p></div>').join('')+'<div class="tot"><span>'+d[0]+' total</span><span>about '+ms.reduce((a,m)=>a+m[1],0)+' g protein</span></div>';
+$('#dn').textContent=d[1]?'Strength day: have a banana or toast 45 to 60 minutes before the session, and your next meal or shake within an hour after.':'Rest or Kathak day: keep every meal, even if your appetite is low. Use the shake or nuts and dates if a full meal is hard.'}
+rm();
+const GT=[["Daily probiotics","Home-set curd or buttermilk with roasted jeera at lunch and dinner. Live cultures may help the gut recover after antibiotic and acid-suppressing courses and can ease their side effects."],["Soothing fibre","Oats, dalia, ragi porridge, soaked chia, a teaspoon of roasted ground flaxseed, ripe banana, ripe papaya and stewed apple. Cook vegetables soft: lauki, ridge gourd, pumpkin, carrot, sweet potato."],["Protective plant foods","Lightly cooked broccoli 2 to 3 times a week (small studies link its sulforaphane to H. pylori control). Turmeric in cooking and bedtime milk. Fennel (saunf) water or jeera and ajwain water after meals."],["Healthy fats, spread through the day","A little at each meal: ghee, coconut, olive oil, almonds, walnuts, peanut butter, seeds. Avoid one very heavy fatty meal, which can worsen reflux."],["Go easy on","Fried food, very spicy food, pickles, strong tea and coffee, carbonated drinks, citrus or sour fruit on an empty stomach, very sour fermented batter, raw salads at night, and alcohol (continue to avoid)."],["Important","These foods support gut healing and do not treat the infection. Confirm eradication with a stool antigen or breath test. Your doctor will advise when to pause pantoprazole before it."]];
+$('#gt').innerHTML=GT.map((g,i)=>'<details'+(i<1?' open':'')+'><summary>'+g[0]+'</summary><p style="margin:8px 0 2px">'+g[1]+'</p></details>').join('');
+// protein
+const P=[["Milk, 1 glass (250 ml)",8],["Curd, 1 bowl",5],["Paneer, 50 g",9],["Dal, 1 bowl cooked",7],["Roti or paratha, 1",3],["Oats, 40 g",5],["Chia, 1 tbsp",2],["Peanut or nut butter, 1 tbsp",4],["Nuts, small handful",5],["Sprouts or chana, 1 bowl",9],["Soya chunks, 25 g dry",13],["Besan or moong chilla, 1",5],["Egg, 1",6],["Idli, 1",2],["Khichdi, 1 bowl",8],["Protein powder, half scoop",11],["Protein powder, 1 scoop",22]];
+const G=80;
+function rp(){const el=$('#pl');el.innerHTML='';let t=0;
+P.forEach(([n,g],i)=>{const c=D.p[i]||0;t+=c*g;const r=document.createElement('div');r.className='row';
+r.innerHTML='<div class="nm">'+n+'<div class="g">about '+g+' g</div></div><button aria-label="Remove one">&minus;</button><span class="c">'+c+'</span><button class="p" aria-label="Add one">+</button>';
+const [m,,p]=[r.children[1],0,r.children[3]];m.onclick=()=>{D.p[i]=Math.max(0,c-1);save();rp()};p.onclick=()=>{D.p[i]=c+1;save();rp()};el.appendChild(r)});
+$('#pt').textContent=t;$('#pb').style.width=Math.min(100,t/G*100)+'%';
+$('#pm').textContent=t>=G?'Target reached. Well done.':'About '+(G-t)+' g to go. A scoop of powder or 100 g paneer closes most gaps.'}
+rp();$('#pr').onclick=()=>{D.p={};save();rp()};
+// progress
+function rw(){const el=$('#wl');el.innerHTML=S.w.length?'':'<p class="mute">No entries yet. Add your starting weight above.</p>';
+S.w.slice(-8).reverse().forEach(w=>{const d=document.createElement('div');d.className='log';
+d.innerHTML='<span>'+w.d+'</span><span>'+w.k+' kg'+(w.f?', fat '+w.f+'%':'')+(w.m?', muscle '+w.m+' kg':'')+'</span>';el.appendChild(d)});
+const s=$('#ws');if(S.w.length>1){const ch=(S.w[S.w.length-1].k-S.w[0].k).toFixed(1);s.style.display='block';s.textContent='Change since your first entry: '+(ch>0?'+':'')+ch+' kg'}else s.style.display='none'}
+$('#wa').onclick=()=>{const k=parseFloat($('#wk').value);if(!k)return;
+S.w.push({d:T,k,f:$('#wf').value,m:$('#wm').value});['#wk','#wf','#wm'].forEach(x=>$(x).value='');save();rw()};
+rw();show(tabs.some(t=>'#'+t[0]===location.hash)?location.hash.slice(1):'today');
+</script></body></html>
